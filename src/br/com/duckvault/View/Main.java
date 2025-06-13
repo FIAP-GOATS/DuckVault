@@ -7,34 +7,51 @@ import br.com.duckvault.Models.User;
 import br.com.duckvault.Services.CompanyService;
 import br.com.duckvault.Services.TransactionService;
 import br.com.duckvault.Services.UserService;
+import br.com.duckvault.Services.SaveOnFileService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args){
 
         //Try-catch test according to the FIAP's requirements
         try{
-            User user1 = UserService.registerUser("Zezinho", "Zezinho@fiap.com", "zezinho123");
-            User user2 = UserService.registerUser("Pedrinho", "Pedrinho@fiap.com", "pedrinho123");
+            Map<String, User> usersMap = new HashMap<>();
+            Map<String, Company> companiesMap = new HashMap<>();
+
+            User user1 = UserService.registerUser("Tom Brady", "tombrady@nfl.com", "admin123");
+            User user2 = UserService.registerUser("Elon Musk", "elonmusk@x.com", "admin123");
+
+            usersMap.put(user1.getEmail(), user1);
+            usersMap.put(user2.getEmail(), user2);
+
             System.out.println("Usuários:");
-            System.out.println("nome: " + user1.getName() + ", email: " + user1.getEmail());
-            System.out.println("nome: " + user2.getName() + ", email: " + user2.getEmail());
+            for (User u : usersMap.values()) {
+                System.out.println("nome: " + u.getName() + ", email: " + u.getEmail());
+            }
 
-            List<User> owners1 = new ArrayList<>();
-            owners1.add(new User("Aurelio", "aurelio@fiap.com", "123"));
-            owners1.add(new User("Nayara", "nayara@fiap.com", "321"));
-            Company company1 = CompanyService.registerCompany("madereira du norte", owners1);
+            List<User> owners1 = Arrays.asList(new User("Steve Jobs", "Stevejobs@apple.com", "123"), new User("Steve Wozniak", "stevewozniak@fiap.com", "321"));
+            List<User> owners2 = Arrays.asList(new User("Larry Page", "larrypage@gmail.com", "123"), new User("Sergey Brin", "sergey@gmail.com", "321"));
 
-            List<User> owners2 = new ArrayList<>();
-            owners2.add(new User("Luna", "luna@fiap.com", "123"));
-            owners2.add(new User("Leo", "leo@fiap.com", "321"));
-            Company company2 = CompanyService.registerCompany("Padaria Casa do Pão", owners2);
+            Company company1 = CompanyService.registerCompany("Apple Inc.", owners1);
+            Company company2 = CompanyService.registerCompany("Alphabet Inc.", owners2);
+
+            companiesMap.put(company1.getName(), company1);
+            companiesMap.put(company2.getName(), company2);
 
             System.out.println("\nEmpresas:");
-            System.out.println("Nome da empresa: " + company1.getName() + ", lista de donos: " + company1.getOwners());
-            System.out.println("Nome da empresa: " + company2.getName() + ", lista de donos: " + company2.getOwners());
+            for (Company c : companiesMap.values()) {
+                System.out.print("Nome: " + c.getName() + ", Donos: ");
+                List<User> donos = c.getOwners();
+                for (int i = 0; i < donos.size(); i++) {
+                    User dono = donos.get(i);
+                    System.out.print(dono.getName() + "(" + dono.getEmail() + ")");
+                    if (i < donos.size() - 1) {
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println();
+            }
 
             CryptoAccount conta1 = new CryptoAccount("ethereum", company1);
             System.out.println("\n");
@@ -64,6 +81,9 @@ public class Main {
             }else{
                 System.out.println("Transação recusada: saldo insuficiente");
             }
+
+            SaveOnFileService.saveUsersOnFile(usersMap);
+            SaveOnFileService.saveCompanyOnFile(companiesMap);
 
         } catch (Exception e) {
             System.err.println("Ocorreu um erro: " + e.getMessage());
