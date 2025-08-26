@@ -10,7 +10,7 @@ public class Transaction {
     private CryptoAccount source; //conta que vai fazer a transferência
     private CryptoAccount destination; //conta que vai receber a transferência
     private double amount;
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt;
 
     public Transaction(){}
 
@@ -18,7 +18,7 @@ public class Transaction {
         this.source = source;
         this.destination = destination;
         this.amount = amount;
-        this.timestamp = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public boolean execute(){
@@ -62,8 +62,8 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
 }

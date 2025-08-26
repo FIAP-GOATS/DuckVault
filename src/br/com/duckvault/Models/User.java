@@ -1,27 +1,31 @@
 package br.com.duckvault.Models;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 public class User {
-    private String id;
+    private int id;
     private String name;
     private String email;
     private String password;
-    private boolean isTwoFactorEnabled;
-    private LocalDateTime createdAt;
+    private int isTwoFactorEnabled;
+    private String createdAt;
 
     public User(){}
 
-    public User(String name, String email, String password){
+    public User(String name, String email, String password, int isTwoFactorEnabled ){
         this.name = name;
         this.email = email;
         this.password = password;
-        this.isTwoFactorEnabled = false;
-        this.createdAt = LocalDateTime.now();
+        this.isTwoFactorEnabled = isTwoFactorEnabled;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -48,16 +52,20 @@ public class User {
         this.password = password;
     }
 
-    public boolean isTwoFactorEnabled() {
+    public int getIsTwoFactorEnabled() {
         return isTwoFactorEnabled;
     }
 
-    public void setTwoFactorEnabled(boolean twoFactorEnabled) {
-        isTwoFactorEnabled = twoFactorEnabled;
+    public void setIsTwoFactorEnabled(int isTwoFactorEnabled) {
+        this.isTwoFactorEnabled = isTwoFactorEnabled;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
